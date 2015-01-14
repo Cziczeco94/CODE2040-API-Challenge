@@ -54,7 +54,18 @@ class CodeChallenge:
          #sending back the response to the server
          self.sendPost('validateneedle',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","needle":position})
 
-
+     #problem 3 Prefix #############################################################333
+     def prefixFree(self):
+         self.sendPost('prefix',self.params)#get the dictionary from the server
+         dictionary = json.loads(self.output)["result"]        
+         array = dictionary["array"]       
+         prefix = dictionary["prefix"]         
+         lengthPrefix = len(prefix)
+         
+         
+         prefixFreeArray = [i for i in array if (i[0:lengthPrefix]!= prefix)]
+         
+         self.sendPost('validateprefix',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","array":prefixFreeArray})
 
           
           
@@ -62,6 +73,7 @@ class CodeChallenge:
 cc = CodeChallenge();
 print cc.reverseString()
 print cc.needleHaystack()
-         
+print cc.prefixFree()
+
          
 
