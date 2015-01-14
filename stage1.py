@@ -1,3 +1,6 @@
+#Evangelista Chicheko
+#Code2040 API Challenge
+
 import requests
 import json
 import httplib
@@ -28,7 +31,7 @@ class CodeChallenge:
          lines = txt.split('\n')
          for line in lines:
              print line.strip()
-
+     #problem 1 reversing the string####################################################################################################################
      def reverseString(self):
          self.sendPost('getstring',self.params)#get the word to be reversed from the server
          word = json.loads(self.output)["result"]#converting the returned string to json
@@ -40,9 +43,25 @@ class CodeChallenge:
          
          #sending back the response to the server
          self.sendPost('validatestring',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","string":reversedWord})
+ 
+     #problem 2 finding a string in an array ############################################################################################################
+     def needleHaystack(self):
+         self.sendPost('haystack',self.params)#get the dictionary from the server
+         dictionary = json.loads(self.output)["result"];
+         needleValue = dictionary["needle"] # value of the needle in the returned dictionary
+         hayStackArray = dictionary["haystack"]
+         position = hayStackArray.index(needleValue)
+         #sending back the response to the server
+         self.sendPost('validateneedle',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","needle":position})
+
+
+
+          
+          
          
 cc = CodeChallenge();
 print cc.reverseString()
+print cc.needleHaystack()
          
          
 
