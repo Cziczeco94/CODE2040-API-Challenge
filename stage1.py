@@ -4,6 +4,9 @@
 import requests
 import json
 import httplib
+from datetime import datetime
+import time
+from datetime import timedelta
 
 class CodeChallenge:
 
@@ -23,9 +26,7 @@ class CodeChallenge:
          print str(response.status)
          if response.status == httplib.OK:
              print "Output from CGI request"
-             self.output = response.read();
-             print self.output
-             
+             self.output = response.read();             
          httpServ.close()
      def printText(self, txt):
          lines = txt.split('\n')
@@ -37,7 +38,6 @@ class CodeChallenge:
          word = json.loads(self.output)["result"]#converting the returned string to json
          reversedWord = ""
          length = len(word)
-         print word
          for i in range(length):
              reversedWord = reversedWord + word[length - i -1]
          
@@ -60,20 +60,33 @@ class CodeChallenge:
          dictionary = json.loads(self.output)["result"]        
          array = dictionary["array"]       
          prefix = dictionary["prefix"]         
-         lengthPrefix = len(prefix)
-         
-         
+         lengthPrefix = len(prefix)  
          prefixFreeArray = [i for i in array if (i[0:lengthPrefix]!= prefix)]
          
          self.sendPost('validateprefix',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","array":prefixFreeArray})
+    #problem 4 dating game
+     def dating(self): 
+         self.sendPost('time',self.params)#get the dictionary from the server
+         dictionary = json.loads(self.output)["result"]
+         datestamp = dictionary["datestamp"]
+         interval = dictionary["interval"]
+         date = datetime.strptime(datestamp,'%Y-%m-%dT%H:%M:%S.%fZ') #converting to seconds
+         new_date = timedelta(0,interval) + date
+         new_format = new_date.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + "Z" #converting back to the given format     
+         self.sendPost('validatetime',{"email": "echicheko@css.edu", "github": "https://github.com/evangelista94/CODE2040-API-Challenge", "token": "EbuXdMtJm3","datestamp":new_format})
 
           
           
-         
-cc = CodeChallenge();
-print cc.reverseString()
-print cc.needleHaystack()
-print cc.prefixFree()
+#########################################################################################################################################
+##### Please uncomment to test. 
+##### After uncommenting in a python editor, press F5 to execute in the normal python editor or Control + B in sublime text
+##### status 200 show that , there submission to the server was successful
+
+# cc = CodeChallenge();
+# print cc.reverseString()
+# print cc.needleHaystack()
+# print cc.prefixFree()
+# print cc.dating()
 
          
 
